@@ -1,5 +1,37 @@
 import { useState, useRef, useEffect } from "react";
 
+// Avatar Component
+const Avatar = ({ initials, color, size = 48, emoji = null }) => (
+  <div style={{
+    width: size,
+    height: size,
+    borderRadius: "50%",
+    background: color,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: size * 0.45,
+    fontWeight: "bold",
+    color: "white",
+    boxShadow: `0 4px 12px ${color}40`,
+  }}>
+    {emoji || initials}
+  </div>
+);
+
+// Photo Emoji Component
+const PhotoEmoji = ({ symbol, size = 80 }) => (
+  <div style={{
+    fontSize: size,
+    lineHeight: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}>
+    {symbol}
+  </div>
+);
+
 const FontLink = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
@@ -156,19 +188,19 @@ const FontLink = () => (
 );
 
 const FRIENDS = [
-  { id: 1, name: "Maya Chen", emoji: "?????", color: "#FF6B9D" },
-  { id: 2, name: "Jake Rivera", emoji: "??", color: "#4C8AFF" },
-  { id: 3, name: "Priya Sharma", emoji: "?????", color: "#9B5DE5" },
-  { id: 4, name: "Leo Park", emoji: "?????", color: "#FFB347" },
+  { id: 1, name: "Maya Chen", initials: "MC", color: "#FF6B9D" },
+  { id: 2, name: "Jake Rivera", initials: "JR", color: "#4C8AFF" },
+  { id: 3, name: "Priya Sharma", initials: "PS", color: "#9B5DE5" },
+  { id: 4, name: "Leo Park", initials: "LP", color: "#FFB347" },
 ];
 
 const PHOTOS = [
-  { id: 1, emoji: "??", bg: "linear-gradient(135deg,#FF6B35,#F7C59F)", sender: "Maya Chen", time: "2m ago" },
-  { id: 2, emoji: "?", bg: "linear-gradient(135deg,#3D2314,#8C6A57)", sender: "Jake Rivera", time: "14m ago" },
-  { id: 3, emoji: "??", bg: "linear-gradient(135deg,#1a4a2e,#4CAF8C)", sender: "You", time: "1h ago" },
-  { id: 4, emoji: "??", bg: "linear-gradient(135deg,#1a0a2e,#9B5DE5)", sender: "Leo Park", time: "3h ago" },
-  { id: 5, emoji: "??", bg: "linear-gradient(135deg,#FF4C2E,#FFB347)", sender: "You", time: "2h ago" },
-  { id: 6, emoji: "??", bg: "linear-gradient(135deg,#0a1628,#1a0a2e)", sender: "Priya Sharma", time: "5h ago" },
+  { id: 1, symbol: "🌅", bg: "linear-gradient(135deg,#FF6B35,#F7C59F)", sender: "Maya Chen", time: "2m ago" },
+  { id: 2, symbol: "☕", bg: "linear-gradient(135deg,#3D2314,#8C6A57)", sender: "Jake Rivera", time: "14m ago" },
+  { id: 3, symbol: "🌿", bg: "linear-gradient(135deg,#1a4a2e,#4CAF8C)", sender: "You", time: "1h ago" },
+  { id: 4, symbol: "🎸", bg: "linear-gradient(135deg,#1a0a2e,#9B5DE5)", sender: "Leo Park", time: "3h ago" },
+  { id: 5, symbol: "🍕", bg: "linear-gradient(135deg,#FF4C2E,#FFB347)", sender: "You", time: "2h ago" },
+  { id: 6, symbol: "🌙", bg: "linear-gradient(135deg,#0a1628,#1a0a2e)", sender: "Priya Sharma", time: "5h ago" },
 ];
 
 export default function App() {
@@ -184,11 +216,11 @@ export default function App() {
   }, [activeTab]);
 
   const navItems = [
-    { id: "feed", icon: "??", label: "Feed" },
-    { id: "friends", icon: "??", label: "Friends" },
-    { id: "camera", icon: "??", label: "Camera" },
-    { id: "widgets", icon: "??", label: "Widgets" },
-    { id: "profile", icon: "??", label: "Profile" },
+    { id: "feed", icon: "📰", label: "Feed" },
+    { id: "friends", icon: "👥", label: "Friends" },
+    { id: "camera", icon: "📷", label: "Camera" },
+    { id: "widgets", icon: "📱", label: "Widgets" },
+    { id: "profile", icon: "👤", label: "Profile" },
   ];
 
   return (
@@ -197,7 +229,7 @@ export default function App() {
       <div className="app-container">
         <div className="sidebar animate-slideLeft">
           <div className="logo-section">
-            <div className="logo-icon">??</div>
+            <div className="logo-icon">🔒</div>
             <div className="logo-text">Locket</div>
           </div>
           <div className="nav-section">
@@ -222,13 +254,13 @@ export default function App() {
                   <div className="header-subtitle">Latest moments from your friends</div>
                 </div>
                 <div className="header-actions">
-                  <button className="btn btn-primary" onClick={() => setActiveTab("camera")}>?? Capture</button>
+                  <button className="btn btn-primary" onClick={() => setActiveTab("camera")}>📷 Capture</button>
                 </div>
               </div>
               <div className="feed-grid">
                 {PHOTOS.map((photo, idx) => (
                   <div key={photo.id} className="photo-card animate-fadeup" style={{ background: photo.bg, animationDelay: `${idx * 0.08}s` }}>
-                    <div style={{ fontSize: 80 }}>{photo.emoji}</div>
+                    <PhotoEmoji symbol={photo.symbol} size={80} />
                     <div className="photo-meta">
                       <div className="photo-sender">{photo.sender}</div>
                       <div className="photo-time">{photo.time}</div>
@@ -254,15 +286,13 @@ export default function App() {
                 {FRIENDS.map((friend, idx) => (
                   <div key={friend.id} className="card animate-fadeup" style={{ animationDelay: `${idx * 0.1}s` }}>
                     <div className="card-header">
-                      <div style={{ width: 48, height: 48, borderRadius: "50%", background: friend.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>
-                        {friend.emoji}
-                      </div>
+                      <Avatar initials={friend.initials} color={friend.color} size={48} />
                       <div>
                         <div className="card-title">{friend.name}</div>
                         <div style={{ fontSize: 12, color: "var(--locket-muted)" }}>Active now</div>
                       </div>
                     </div>
-                    <div className="card-content">Shared 24 photos � Last update 2 hours ago</div>
+                    <div className="card-content">Shared 24 photos • Last update 2 hours ago</div>
                     <button className="btn btn-secondary" style={{ width: "100%", marginTop: 16 }}>View</button>
                   </div>
                 ))}
@@ -283,16 +313,18 @@ export default function App() {
                   <video ref={videoRef} autoPlay playsInline muted style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 16 }} />
                 </div>
                 <div style={{ display: "flex", gap: 12 }}>
-                  <button className="btn btn-primary" style={{ flex: 1 }}>?? Capture</button>
-                  <button className="btn btn-secondary" style={{ flex: 1 }}>?? Flip</button>
+                  <button className="btn btn-primary" style={{ flex: 1 }}>📷 Capture</button>
+                  <button className="btn btn-secondary" style={{ flex: 1 }}>🔄 Flip</button>
                 </div>
                 <div style={{ marginTop: 24 }}>
                   <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 12, textTransform: "uppercase", color: "var(--locket-muted)" }}>Send to</div>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))", gap: 12 }}>
                     {FRIENDS.map(friend => (
                       <div key={friend.id} style={{ textAlign: "center", cursor: "pointer" }}>
-                        <div style={{ width: 64, height: 64, borderRadius: "50%", background: friend.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, margin: "0 auto 8px", cursor: "pointer", transition: "transform 0.3s" }} onMouseEnter={e => e.target.style.transform = "scale(1.1)"} onMouseLeave={e => e.target.style.transform = "scale(1)"}>
-                          {friend.emoji}
+                        <div style={{ marginBottom: 8, display: "flex", justifyContent: "center" }} onMouseEnter={e => e.querySelector('div').style.transform = "scale(1.1)"} onMouseLeave={e => e.querySelector('div').style.transform = "scale(1)"}>
+                          <div style={{ transition: "transform 0.3s" }}>
+                            <Avatar initials={friend.initials} color={friend.color} size={64} />
+                          </div>
                         </div>
                         <div style={{ fontSize: 12 }}>{friend.name.split(" ")[0]}</div>
                       </div>
@@ -313,7 +345,7 @@ export default function App() {
               </div>
               <div className="cards-grid">
                 {[
-                  { title: "Home Screen", desc: "2�2 grid widget", icon: "??" },
+                  { title: "Home Screen", desc: "2�2 grid widget", icon: "??" },
                   { title: "Lock Screen", desc: "Minimal widget", icon: "??" },
                   { title: "Dynamic Island", desc: "Mini widget", icon: "??" },
                   { title: "Always-On Display", desc: "Status widget", icon: "?" },
