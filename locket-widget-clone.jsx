@@ -13,7 +13,7 @@ const FontLink = () => (
       --locket-peach: #FF7B5C;
       --locket-coral: #FF4C2E;
       --locket-dark: #1A0F0A;
-      --locket-mid: #3D2314;
+      --locket-mid: #53250a;
       --locket-muted: #8C6A57;
       --locket-gold: #FFB347;
       --locket-green: #4CAF8C;
